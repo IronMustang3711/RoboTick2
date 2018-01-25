@@ -8,65 +8,44 @@
 #include <iostream>
 #include <string>
 
-#include <LiveWindow/LiveWindow.h>
-#include <SmartDashboard/SendableChooser.h>
-#include <SmartDashboard/SmartDashboard.h>
-#include <TimedRobot.h>
+#include <WPILib.h>
+#include <AHRS.h>
+#include <ctre/Phoenix.h>
+#include "Subsystems/DriveTrain.h"
 
-class Robot : public frc::TimedRobot {
-public:
-	void RobotInit() {
-		m_chooser.AddDefault(kAutoNameDefault, kAutoNameDefault);
-		m_chooser.AddObject(kAutoNameCustom, kAutoNameCustom);
-		frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+using namespace frc;
+using namespace std;
+using namespace cs;
+using namespace nt;
+
+
+struct Robot : public TimedRobot {
+
+	WPI_TalonSRX leftTalon{2};
+	WPI_TalonSRX rightTalon{3};
+
+	DifferentialDrive drive{leftTalon,rightTalon};
+
+	AHRS navx{SPI::Port::kMXP};
+
+	PowerDistributionPanel pdp{};
+
+	DriveTrain drivetrainSubsystem{leftTalon,rightTalon,drive,navx};
+
+
+
+	void RobotInit() override {
+		leftTalon.SetName("left motor controller");
+		rightTalon.SetName("right motor controller");
+		drive.SetName("robot drive");
+		navx.SetName("navx");
+		pdp.SetName("power distribution panel");
+
 	}
 
-	/*
-	 * This autonomous (along with the chooser code above) shows how to
-	 * select between different autonomous modes using the dashboard. The
-	 * sendable chooser code works with the Java SmartDashboard. If you
-	 * prefer the LabVIEW Dashboard, remove all of the chooser code and
-	 * uncomment the GetString line to get the auto name from the text box
-	 * below the Gyro.
-	 *
-	 * You can add additional auto modes by adding additional comparisons to
-	 * the if-else structure below with additional strings. If using the
-	 * SendableChooser make sure to add them to the chooser code above as
-	 * well.
-	 */
-	void AutonomousInit() override {
-		m_autoSelected = m_chooser.GetSelected();
-		// m_autoSelected = SmartDashboard::GetString("Auto Selector",
-		//		 kAutoNameDefault);
-		std::cout << "Auto selected: " << m_autoSelected << std::endl;
 
-		if (m_autoSelected == kAutoNameCustom) {
-			// Custom Auto goes here
-		} else {
-			// Default Auto goes here
-		}
-	}
 
-	void AutonomousPeriodic() {
-		if (m_autoSelected == kAutoNameCustom) {
-			// Custom Auto goes here
-		} else {
-			// Default Auto goes here
-		}
-	}
 
-	void TeleopInit() {}
-
-	void TeleopPeriodic() {}
-
-	void TestPeriodic() {}
-
-private:
-	frc::LiveWindow& m_lw = *LiveWindow::GetInstance();
-	frc::SendableChooser<std::string> m_chooser;
-	const std::string kAutoNameDefault = "Default";
-	const std::string kAutoNameCustom = "My Auto";
-	std::string m_autoSelected;
 };
 
 START_ROBOT_CLASS(Robot)
