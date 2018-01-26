@@ -5,7 +5,7 @@
  *      Author: jason
  */
 
-#include <Commands/ResetStuff.h>
+#include "ResetStuff.h"
 
 DrivetrainResetCommand::DrivetrainResetCommand(const llvm::Twine& name, DriveTrain& _drive)
 : InstantCommand{name}, drive{_drive}

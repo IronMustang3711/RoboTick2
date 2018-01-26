@@ -5,7 +5,7 @@
  *      Author: jason
  */
 
-#include <Commands/ReadWaypoints.h>
+#include "ReadWaypoints.h"
 #include <support/json.h>
 //#include <fstream>
 #include <pathfinder.h>
