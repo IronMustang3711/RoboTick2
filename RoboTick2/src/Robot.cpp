@@ -12,6 +12,9 @@
 #include <AHRS.h>
 #include <ctre/Phoenix.h>
 #include "Subsystems/DriveTrain.h"
+#include "Commands/ArcadeDrive.h"
+#include "Commands/CurvatureDrive.h"
+#include "Commands/ResetEncoders.h"
 
 using namespace frc;
 using namespace std;
@@ -32,7 +35,13 @@ struct Robot : public TimedRobot {
 
 	DriveTrain drivetrainSubsystem{leftTalon,rightTalon,drive,navx};
 
+	Joystick joystick{0};
 
+
+	SendableChooser<Command*> teleopChooser{};
+
+
+	Command* driveCommand;
 
 	void RobotInit() override {
 		leftTalon.SetName("left motor controller");
@@ -41,6 +50,58 @@ struct Robot : public TimedRobot {
 		navx.SetName("navx");
 		pdp.SetName("power distribution panel");
 
+
+		teleopChooser.AddDefault("arcade drive", new ArcadeDrive(drivetrainSubsystem,joystick));
+		teleopChooser.AddObject("curvature drive", new CurvatureDrive(drivetrainSubsystem,joystick));
+		SmartDashboard::PutData(new CurvatureDrive(drivetrainSubsystem,joystick));
+
+
+		SmartDashboard::PutData("teleop modes",&teleopChooser);
+
+		drive.SetSafetyEnabled(false);
+
+		 leftTalon.ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 0, 0);
+		 rightTalon.ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 0, 0);
+
+		 rightTalon.SetSensorPhase(true);
+
+
+		 SmartDashboard::PutData(new ResetEncoders(drivetrainSubsystem));
+		 SmartDashboard::PutData(new ResetGyro(drivetrainSubsystem));
+
+
+	}
+
+	void TeleopPeriodic() override {
+		Scheduler::GetInstance()->Run();
+		SmartDashboard::PutData(&drivetrainSubsystem);
+
+		SmartDashboard::PutNumber("left vel",leftTalon.GetSelectedSensorVelocity(0));
+		SmartDashboard::PutNumber("right vel",rightTalon.GetSelectedSensorVelocity(0));
+
+		SmartDashboard::PutNumber("left encoder", leftTalon.GetSelectedSensorPosition(0));
+		SmartDashboard::PutNumber("right encoder", rightTalon.GetSelectedSensorPosition(0));
+
+
+
+	}
+
+	void TeleopInit() override {
+		if(driveCommand != nullptr)
+			driveCommand->Cancel();
+
+
+		driveCommand = teleopChooser.GetSelected();
+		if(driveCommand != nullptr)
+			driveCommand->Start();
+
+	}
+
+	void DisabledPeriodic() override{
+		if(driveCommand){
+			driveCommand->Cancel();
+			driveCommand = nullptr;
+		}
 	}
 
 

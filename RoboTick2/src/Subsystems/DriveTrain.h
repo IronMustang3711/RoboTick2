@@ -20,11 +20,14 @@ public:
 	DriveTrain(WPI_TalonSRX& leftTalon, WPI_TalonSRX& rightTalon,DifferentialDrive& drive,AHRS& ahrs);
 	void InitDefaultCommand();
 
-
+	  void Drive(double fwd, double rotate);
 	  void ArcadeDrive(double xSpeed, double zRotation);
 	  void CurvatureDrive(double xSpeed, double zRotation, bool isQuickTurn);
 	  void TankDrive(double leftSpeed, double rightSpeed);
 	  void stopMotors();
+
+	  void resetEncoders();
+	  void resetGyro();
 
 };
 

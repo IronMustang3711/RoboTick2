@@ -11,6 +11,8 @@ DriveTrain::DriveTrain(WPI_TalonSRX& _leftTalon, WPI_TalonSRX& _rightTalon,
 			AddChild(rightTalon);
 			AddChild(drive);
 			AddChild(ahrs);
+
+
 }
 
 void DriveTrain::InitDefaultCommand() {
@@ -35,5 +37,15 @@ void DriveTrain::TankDrive(double leftSpeed, double rightSpeed) {
 void DriveTrain::stopMotors() {
 	drive.StopMotor();
 }
-// Put methods for controlling this subsystem
+
+
+void DriveTrain::resetEncoders() {
+	leftTalon.GetSensorCollection().SetQuadraturePosition(0, 0);
+	rightTalon.GetSensorCollection().SetQuadraturePosition(0, 0);
+}
+
+void DriveTrain::resetGyro() {
+	ahrs.Reset();
+}
+	// Put methods for controlling this subsystem
 // here. Call these from Commands.
