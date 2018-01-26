@@ -11,10 +11,9 @@
 #include <WPILib.h>
 #include <AHRS.h>
 #include <ctre/Phoenix.h>
+#include <Commands/ResetStuff.h>
 #include "Subsystems/DriveTrain.h"
-#include "Commands/ArcadeDrive.h"
-#include "Commands/CurvatureDrive.h"
-#include "Commands/ResetEncoders.h"
+#include "Commands/TeleopDrives.h"
 
 using namespace frc;
 using namespace std;
@@ -51,9 +50,9 @@ struct Robot : public TimedRobot {
 		pdp.SetName("power distribution panel");
 
 
-		teleopChooser.AddDefault("arcade drive", new ArcadeDrive(drivetrainSubsystem,joystick));
-		teleopChooser.AddObject("curvature drive", new CurvatureDrive(drivetrainSubsystem,joystick));
-		SmartDashboard::PutData(new CurvatureDrive(drivetrainSubsystem,joystick));
+		teleopChooser.AddDefault("arcade drive", new teleop::ArcadeDrive(drivetrainSubsystem,joystick));
+		teleopChooser.AddObject("curvature drive", new teleop::CurvatureDrive(drivetrainSubsystem,joystick));
+		SmartDashboard::PutData(new teleop::CurvatureDrive(drivetrainSubsystem,joystick));
 
 
 		SmartDashboard::PutData("teleop modes",&teleopChooser);
