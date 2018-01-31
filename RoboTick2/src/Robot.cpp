@@ -30,32 +30,36 @@ struct Robot : public TimedRobot {
 
 	AHRS navx{SPI::Port::kMXP};
 
-	PowerDistributionPanel pdp{};
+	//PowerDistributionPanel pdp{};
 
 	DriveTrain drivetrainSubsystem{leftTalon,rightTalon,drive,navx};
 
 	Joystick joystick{0};
 
 
-	SendableChooser<Command*> teleopChooser{};
+	//SendableChooser<Command*> teleopChooser{};
 
 
-	Command* driveCommand;
+	//Command* driveCommand;
 
 	void RobotInit() override {
+		SmartDashboard::PutString("version", "1.0.2");
+
 		leftTalon.SetName("left motor controller");
 		rightTalon.SetName("right motor controller");
 		drive.SetName("robot drive");
 		navx.SetName("navx");
-		pdp.SetName("power distribution panel");
+	//	pdp.SetName("power distribution panel");
 
 
-		teleopChooser.AddDefault("arcade drive", new teleop::ArcadeDrive(drivetrainSubsystem,joystick));
-		teleopChooser.AddObject("curvature drive", new teleop::CurvatureDrive(drivetrainSubsystem,joystick));
-		SmartDashboard::PutData(new teleop::CurvatureDrive(drivetrainSubsystem,joystick));
+		//drivetrainSubsystem.SetDefaultCommand(new teleop::TeleopSelector{ drivetrainSubsystem, joystick });
+
+		//teleopChooser.AddDefault("arcade drive", new teleop::ArcadeDrive(drivetrainSubsystem,joystick));
+		//teleopChooser.AddObject("curvature drive", new teleop::CurvatureDrive(drivetrainSubsystem,joystick));
+		//SmartDashboard::PutData(new teleop::CurvatureDrive(drivetrainSubsystem,joystick));
 
 
-		SmartDashboard::PutData("teleop modes",&teleopChooser);
+		//SmartDashboard::PutData("teleop modes",&teleopChooser);
 
 		drive.SetSafetyEnabled(false);
 
@@ -67,13 +71,15 @@ struct Robot : public TimedRobot {
 
 		 SmartDashboard::PutData(new ResetEncoders(drivetrainSubsystem));
 		 SmartDashboard::PutData(new ResetGyro(drivetrainSubsystem));
-
+		 SmartDashboard::PutData(new teleop::ArcadeDrive(drivetrainSubsystem,joystick));
+		 SmartDashboard::PutData(new teleop::CurvatureDrive(drivetrainSubsystem,joystick));
 
 	}
 
 	void TeleopPeriodic() override {
-		Scheduler::GetInstance()->Run();
+
 		SmartDashboard::PutData(&drivetrainSubsystem);
+		SmartDashboard::PutData(Scheduler::GetInstance());
 
 		SmartDashboard::PutNumber("left vel",leftTalon.GetSelectedSensorVelocity(0));
 		SmartDashboard::PutNumber("right vel",rightTalon.GetSelectedSensorVelocity(0));
@@ -86,23 +92,27 @@ struct Robot : public TimedRobot {
 	}
 
 	void TeleopInit() override {
-		if(driveCommand != nullptr)
-			driveCommand->Cancel();
+		//if(driveCommand != nullptr)
+		//	driveCommand->Cancel();
 
 
-		driveCommand = teleopChooser.GetSelected();
-		if(driveCommand != nullptr)
-			driveCommand->Start();
+		//driveCommand = teleopChooser.GetSelected();
+		//if(driveCommand != nullptr)
+		//	driveCommand->Start();
 
 	}
 
 	void DisabledPeriodic() override{
-		if(driveCommand){
-			driveCommand->Cancel();
-			driveCommand = nullptr;
-		}
+		//if(driveCommand){
+		//	driveCommand->Cancel();
+		//	driveCommand = nullptr;
+		//}
 	}
 
+
+	void RobotPeriodic() override {
+		Scheduler::GetInstance()->Run();
+	}
 
 
 
