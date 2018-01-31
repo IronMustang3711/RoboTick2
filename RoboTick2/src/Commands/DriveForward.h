@@ -5,18 +5,30 @@
  *      Author: jason
  */
 
-#ifndef SRC_COMMANDS_DRIVEFORWARD_H_
-#define SRC_COMMANDS_DRIVEFORWARD_H_
+#pragma once
 
 #include <WPILib.h>
-#include "../Subsystems/DriveTrain.h"
-
+//#include "../Subsystems/DriveTrain.h"
+class DriveTrain;
 struct DriveForward : Command {
 
 	DriveForward(DriveTrain& drive);
 
 	void Execute() override;
 	bool IsFinished() override;
+
+	DriveTrain& drive;
 };
 
-#endif /* SRC_COMMANDS_DRIVEFORWARD_H_ */
+
+struct DriveForwardMotionMagic : Command {
+
+	DriveForwardMotionMagic(DriveTrain& drive);
+
+	void Initialize() override;
+	void Execute() override;
+	bool IsFinished() override;
+	void End() override;
+
+	DriveTrain& drive;
+};

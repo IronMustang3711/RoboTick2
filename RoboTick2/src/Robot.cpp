@@ -14,6 +14,7 @@
 #include "Commands/ResetStuff.h"
 #include "Subsystems/DriveTrain.h"
 #include "Commands/TeleopDrives.h"
+#include "Commands/DriveForward.h"
 
 using namespace frc;
 using namespace std;
@@ -37,10 +38,8 @@ struct Robot : public TimedRobot {
 	Joystick joystick{0};
 
 
-	//SendableChooser<Command*> teleopChooser{};
 
 
-	//Command* driveCommand;
 
 	void RobotInit() override {
 		SmartDashboard::PutString("version", "1.0.2");
@@ -52,14 +51,7 @@ struct Robot : public TimedRobot {
 	//	pdp.SetName("power distribution panel");
 
 
-		//drivetrainSubsystem.SetDefaultCommand(new teleop::TeleopSelector{ drivetrainSubsystem, joystick });
 
-		//teleopChooser.AddDefault("arcade drive", new teleop::ArcadeDrive(drivetrainSubsystem,joystick));
-		//teleopChooser.AddObject("curvature drive", new teleop::CurvatureDrive(drivetrainSubsystem,joystick));
-		//SmartDashboard::PutData(new teleop::CurvatureDrive(drivetrainSubsystem,joystick));
-
-
-		//SmartDashboard::PutData("teleop modes",&teleopChooser);
 
 		drive.SetSafetyEnabled(false);
 
@@ -73,6 +65,7 @@ struct Robot : public TimedRobot {
 		 SmartDashboard::PutData(new ResetGyro(drivetrainSubsystem));
 		 SmartDashboard::PutData(new teleop::ArcadeDrive(drivetrainSubsystem,joystick));
 		 SmartDashboard::PutData(new teleop::CurvatureDrive(drivetrainSubsystem,joystick));
+		 SmartDashboard::PutData(new DriveForwardMotionMagic(drivetrainSubsystem));
 
 	}
 
