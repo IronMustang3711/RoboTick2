@@ -13,15 +13,15 @@ constexpr int encoder_ticks_per_rev = 1410;
 constexpr double inches_per_encoder_tick = 0.00872;
 constexpr double pi = 3.14159265358979323846;
 
-//not working
-//check
-//constexpr double inches_per_rev = inches_per_encoder_tick * encoder_ticks_per_rev;
-//constexpr double calculated_wheel_radius = inches_per_rev / 2.0*pi;
-//constexpr double expected_wheel_radius = 2.0;
-//constexpr double err = expected_wheel_radius-calculated_wheel_radius;
-//constexpr double abs_err = err <= 0 ? -err : err;
-//static_assert(abs_err < 0.1,"unexpected wheel radius!");
+namespace verify_measurements {
+	constexpr double expected_wheel_radius = 2.0;
 
+	constexpr double inches_per_rev = inches_per_encoder_tick * encoder_ticks_per_rev;
+	constexpr double calculated_wheel_radius = inches_per_rev / (2.0*pi);
+	constexpr double err = expected_wheel_radius - calculated_wheel_radius;
+	constexpr double abs_err = err <= 0 ? -err : err;
+	static_assert(abs_err < 0.05, "unexpected wheel radius!");
+}
 
 
 constexpr double deg_2_rad(double angle_degrees) {
@@ -52,6 +52,10 @@ public:
 
 	void resetEncoders();
 	void resetGyro();
+
+	void Periodic() override;
+
+
 
 };
 
