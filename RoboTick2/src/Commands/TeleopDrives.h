@@ -7,33 +7,59 @@
 
 #pragma once
 
+
+#pragma once
 #include <WPILib.h>
 #include "../Subsystems/DriveTrain.h"
 
+
+class DriveTrain;
+
 namespace teleop {
 
-struct AbstractTeleopDrive: Command {
+
+
+
+class AbstractTeleopDrive : public Command {
+public:
 	AbstractTeleopDrive(const llvm::Twine& name, DriveTrain& drive,
 			Joystick& joystick);
 
+protected:
 	bool IsFinished() override;
+
 
 	DriveTrain& drive;
 	Joystick& joystick;
 };
 
-struct ArcadeDrive: AbstractTeleopDrive {
+class ArcadeDrive: public AbstractTeleopDrive {
+public:
 	ArcadeDrive(DriveTrain& drive, Joystick& joystick);
 
+protected:
 	void Execute() override;
 
 };
 
-struct CurvatureDrive: AbstractTeleopDrive {
+class CurvatureDrive:public AbstractTeleopDrive {
+public:
 	CurvatureDrive(DriveTrain& drive, Joystick& joystick);
 
+protected:
 	void Execute() override;
 
+};
+
+class TeleopSelector : public InstantCommand {
+public:
+	TeleopSelector(DriveTrain& drive, Joystick& joystick);
+
+protected:
+	void Execute() override;
+
+private:
+	SendableChooser<Command*>* chooser;
 };
 
 }

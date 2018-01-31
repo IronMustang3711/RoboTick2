@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include <WPILib.h>
+#include <Commands/InstantCommand.h>
 class ReadWaypoints : InstantCommand {
 public:
 	ReadWaypoints();
