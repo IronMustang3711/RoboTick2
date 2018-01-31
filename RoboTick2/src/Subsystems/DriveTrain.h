@@ -5,8 +5,10 @@
 #include <ctre/Phoenix.h>
 #include <AHRS.h>
 namespace drivetrain_constants {
-//encoder ticks per 100ms(?)
-constexpr int max_encoder_vel = 1350;
+//raw sensor units / 100 ms;
+constexpr int max_encoder_rate_per_100ms = 1350;
+
+
 
 
 constexpr int encoder_ticks_per_rev = 1410;
@@ -21,6 +23,12 @@ namespace verify_measurements {
 	constexpr double err = expected_wheel_radius - calculated_wheel_radius;
 	constexpr double abs_err = err <= 0 ? -err : err;
 	static_assert(abs_err < 0.05, "unexpected wheel radius!");
+
+	constexpr int max_encoder_rate_per_s = max_encoder_rate_per_100ms * 10;
+	constexpr double max_fps = (((1/12.0)*inches_per_encoder_tick )* max_encoder_rate_per_s) ; //9.8 fps. seems high?
+	constexpr double max_mph = (max_fps / 5280.0) * 60*60; //6.7
+	constexpr double max_rpm = (60 * max_encoder_rate_per_s) / double(encoder_ticks_per_rev); //575
+
 }
 
 
@@ -30,7 +38,21 @@ constexpr double deg_2_rad(double angle_degrees) {
 constexpr double inches_to_encoder_ticks(double inches) {
 	return 1.0 / inches_per_encoder_tick * inches;
 }
+constexpr double encoder_ticks_to_inches(int ticks) {
+	return inches_per_encoder_tick * ticks;
 }
+
+
+
+
+
+constexpr double FGain = 1023 / (max_encoder_rate_per_100ms - 0.1*max_encoder_rate_per_100ms); //0.84
+
+
+}
+
+
+
 class DriveTrain: public Subsystem {
 private:
 
@@ -55,6 +77,11 @@ public:
 
 	void Periodic() override;
 
+	void profilingThing();
+
+	void motionMagicInit();
+
+	bool motionMagicOnTarget();
 
 
 };
