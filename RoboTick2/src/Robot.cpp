@@ -42,7 +42,7 @@ struct Robot : public TimedRobot {
 
 
 	void RobotInit() override {
-		SmartDashboard::PutString("version", "1.0.2");
+		SmartDashboard::PutString("version", "1.0.3");
 
 		leftTalon.SetName("left motor controller");
 		rightTalon.SetName("right motor controller");
@@ -55,30 +55,33 @@ struct Robot : public TimedRobot {
 
 		drive.SetSafetyEnabled(false);
 
+
 		 leftTalon.ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 0, 0);
 		 rightTalon.ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 0, 0);
 
-		 rightTalon.SetSensorPhase(true);
+		 rightTalon.SetSensorPhase(false);
+		 rightTalon.SetInverted(true);
 
 
 		 SmartDashboard::PutData(new ResetEncoders(drivetrainSubsystem));
 		 SmartDashboard::PutData(new ResetGyro(drivetrainSubsystem));
 		 SmartDashboard::PutData(new teleop::ArcadeDrive(drivetrainSubsystem,joystick));
 		 SmartDashboard::PutData(new teleop::CurvatureDrive(drivetrainSubsystem,joystick));
+		 SmartDashboard::PutData(new teleop::TankDrive(drivetrainSubsystem,joystick));
 		 SmartDashboard::PutData(new DriveForwardMotionMagic(drivetrainSubsystem));
 
 	}
 
 	void TeleopPeriodic() override {
 
-		SmartDashboard::PutData(&drivetrainSubsystem);
-		SmartDashboard::PutData(Scheduler::GetInstance());
+		//SmartDashboard::PutData(&drivetrainSubsystem);
+		//SmartDashboard::PutData(Scheduler::GetInstance());
 
-		SmartDashboard::PutNumber("left vel",leftTalon.GetSelectedSensorVelocity(0));
-		SmartDashboard::PutNumber("right vel",rightTalon.GetSelectedSensorVelocity(0));
+		//SmartDashboard::PutNumber("left vel",leftTalon.GetSelectedSensorVelocity(0));
+		//SmartDashboard::PutNumber("right vel",rightTalon.GetSelectedSensorVelocity(0));
 
-		SmartDashboard::PutNumber("left encoder", leftTalon.GetSelectedSensorPosition(0));
-		SmartDashboard::PutNumber("right encoder", rightTalon.GetSelectedSensorPosition(0));
+		//SmartDashboard::PutNumber("left encoder", leftTalon.GetSelectedSensorPosition(0));
+		//SmartDashboard::PutNumber("right encoder", rightTalon.GetSelectedSensorPosition(0));
 
 
 
