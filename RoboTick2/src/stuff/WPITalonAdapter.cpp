@@ -7,7 +7,7 @@
 
 #include "WPITalonAdapter.h"
 #include <ctre/Phoenix.h>
-WPITalonAdapter::WPITalonAdapter(Talon& talon): frc::SpeedController{}, delegate{talon}{
+WPITalonAdapter::WPITalonAdapter(Talon_t& talon): frc::SpeedController{}, delegate{talon}{
 }
 
 void WPITalonAdapter::PIDWrite(double output) {

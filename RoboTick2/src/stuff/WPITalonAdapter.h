@@ -13,9 +13,9 @@ class TalonSRX;
 
 class WPITalonAdapter: public frc::SpeedController {
 public:
-	using Talon = ctre::phoenix::motorcontrol::can::TalonSRX;
+	using Talon_t = ctre::phoenix::motorcontrol::can::TalonSRX;
 
-	WPITalonAdapter(Talon& talon);
+	WPITalonAdapter(Talon_t& talon);
 
 	//PIDOutput
 	void PIDWrite(double output) override;
@@ -29,8 +29,13 @@ public:
 	void StopMotor() override;
 
 private:
-	Talon& delegate;
+	Talon_t& delegate;
+};
 
+class MyTalon {
+	using Impl = ctre::phoenix::motorcontrol::can::TalonSRX;
+
+	Impl* impl;
 };
 
 
