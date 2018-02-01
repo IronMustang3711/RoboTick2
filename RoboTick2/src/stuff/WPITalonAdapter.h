@@ -19,13 +19,13 @@ class MyTalon : public frc::SpeedController {
 public:
 	MyTalon(TalonImpl* impl);
 
-	MyTalon(const MyTalon& other);
-	MyTalon(MyTalon&& other);
+	MyTalon(const MyTalon& other) = default;
+	MyTalon(MyTalon&& other)      = default;
 
-	MyTalon& operator =(const MyTalon& other);
-	MyTalon& operator =(MyTalon&& other);
+	MyTalon& operator= (const MyTalon& other) = default;
+	MyTalon& operator= (MyTalon&& other)      = default;
 
-	~MyTalon();
+
 
 
 

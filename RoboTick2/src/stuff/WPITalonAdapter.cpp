@@ -8,35 +8,10 @@
 #include "WPITalonAdapter.h"
 #include <ctre/Phoenix.h>
 
-MyTalon::MyTalon(TalonImpl * _impl): impl{_impl} 
+
+MyTalon::MyTalon(TalonImpl * imp): impl{imp}
 {
 }
-
-MyTalon::MyTalon(const MyTalon & other) : MyTalon{other.impl} //copy ctor
-{
-}
-
-MyTalon::MyTalon(MyTalon && other) : MyTalon{ other.impl } //move ctor
-{
-}
-
-MyTalon & MyTalon::operator=(const MyTalon & other) //copy assign
-{
-	this->impl = other.impl;
-	return *this;
-}
-
-MyTalon & MyTalon::operator=(MyTalon && other) //move assign
-{
-	this->impl = other.impl;
-	return *this;
-}
-
-MyTalon::~MyTalon()
-{
-	//if (impl != nullptr) delete impl;
-}
-
 
 
 void MyTalon::Set(double speed)
