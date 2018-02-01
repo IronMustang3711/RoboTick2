@@ -121,7 +121,7 @@ void DriveTrain::profilingThing()
 	constexpr double TIME_STEP = 0.01;
 	constexpr double MAX_V = 9.0; // [in/sec]
 	constexpr double MAX_A = MAX_V / 3.0; //[in/sec^2]
-	constexpr double MAX_JERK = 40.0; //[[in/sec^2]/sec]] TODO: sum MAX_A from 0 to 1 by time_step ?
+	constexpr double MAX_JERK = 40.0; //[[in/sec^2]/sec]] TODO: sum MAX_A from (0 to 1) by time_step ?
 
 	constexpr double WHEELBASE_WIDTH = 19.5;
 
