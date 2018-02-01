@@ -22,7 +22,7 @@ namespace teleop {
 
 class AbstractTeleopDrive : public Command {
 public:
-	AbstractTeleopDrive(const llvm::Twine& name, DriveTrain& drive,
+	AbstractTeleopDrive(const char* name, DriveTrain& drive,
 			Joystick& joystick);
 
 protected:
@@ -45,6 +45,14 @@ protected:
 class CurvatureDrive:public AbstractTeleopDrive {
 public:
 	CurvatureDrive(DriveTrain& drive, Joystick& joystick);
+
+protected:
+	void Execute() override;
+
+};
+class TankDrive: public AbstractTeleopDrive {
+public:
+	TankDrive(DriveTrain& drive, Joystick& joystick);
 
 protected:
 	void Execute() override;

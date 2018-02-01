@@ -9,7 +9,7 @@
 #include "../Subsystems/DriveTrain.h"
 namespace teleop {
 
-AbstractTeleopDrive::AbstractTeleopDrive(const llvm::Twine& name,
+AbstractTeleopDrive::AbstractTeleopDrive(const char* name,
 		DriveTrain& _drive, Joystick& _joystick) :
 		Command { name }, drive { _drive }, joystick { _joystick } {
 	Requires(&drive);
@@ -51,6 +51,22 @@ void CurvatureDrive::Execute() {
 }
 
 
+teleop::TankDrive::TankDrive(DriveTrain& drive, Joystick& joystick)
+: AbstractTeleopDrive { "tank drive", drive, joystick } { }
+
+
+void teleop::TankDrive::Execute() {
+	double l = -1*joystick.GetRawAxis(1);
+	double r = -1*joystick.GetRawAxis(3);
+
+	l = l*l*l;
+	r = r*r*r;
+	SmartDashboard::PutNumber("tank input right: ",r);
+	SmartDashboard::PutNumber("tank input left: ",l);
+
+	drive.TankDrive(l, r);
+}
+
 TeleopSelector::TeleopSelector(DriveTrain& drive, Joystick& joystick)
 	: InstantCommand("teleop selector") {
 	chooser = new SendableChooser<Command*>();
@@ -58,6 +74,7 @@ TeleopSelector::TeleopSelector(DriveTrain& drive, Joystick& joystick)
 	chooser->SetName("teleop chooser");
 	chooser->AddDefault("arcade drive", new ArcadeDrive(drive, joystick));
 	chooser->AddObject("curvature drive", new CurvatureDrive(drive, joystick));
+	chooser->AddObject("tank drive", new TankDrive(drive,joystick));
 	SmartDashboard::PutData(chooser);
 	Requires(&drive);
 }
@@ -72,4 +89,6 @@ void TeleopSelector::Execute()
 
 }
 
- } // namespace teleop_drive
+} // namespace teleop_drive
+
+
