@@ -11,33 +11,14 @@ class TalonSRX;
 }
 }
 
-class WPITalonAdapter: public frc::SpeedController {
-public:
-	using Talon_t = ctre::phoenix::motorcontrol::can::TalonSRX;
 
-	WPITalonAdapter(Talon_t& talon);
-
-	//PIDOutput
-	void PIDWrite(double output) override;
-
-	//SpeedController
-	void Set(double speed) override;
-	double Get() const override;
-	void SetInverted(bool isInverted) override;
-	bool GetInverted() const override;
-	void Disable() override;
-	void StopMotor() override;
-
-private:
-	Talon_t& delegate;
-};
-
-class MyTalon {
+class MyTalon : public frc::SpeedController {
 
 	using TalonImpl = ctre::phoenix::motorcontrol::can::TalonSRX;
 
 public:
 	MyTalon(TalonImpl* impl);
+
 	MyTalon(const MyTalon& other);
 	MyTalon(MyTalon&& other);
 
@@ -45,6 +26,21 @@ public:
 	MyTalon& operator =(MyTalon&& other);
 
 	~MyTalon();
+
+
+
+
+	//PIDOutput
+	inline void PIDWrite(double output) override { Set(output); }
+
+	//SpeedController
+	void Set(double speed) override;
+	double Get() const override;
+	void SetInverted(bool isInverted) override;
+	bool GetInverted() const override;
+	inline void Disable() override { StopMotor(); }
+	inline void StopMotor() override { Set(0); }
+
 
 private:
 	TalonImpl* impl;

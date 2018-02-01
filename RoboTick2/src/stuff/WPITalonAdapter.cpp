@@ -7,58 +7,26 @@
 
 #include "WPITalonAdapter.h"
 #include <ctre/Phoenix.h>
-WPITalonAdapter::WPITalonAdapter(Talon_t& talon): frc::SpeedController{}, delegate{talon}{
-}
 
-void WPITalonAdapter::PIDWrite(double output) {
-	Set(output);
-}
-
-void WPITalonAdapter::Set(double speed) {
-	delegate.Set(ControlMode::PercentOutput,speed);
-}
-
-double WPITalonAdapter::Get() const{
-	return delegate.GetMotorOutputPercent();
-}
-
-void WPITalonAdapter::SetInverted(bool isInverted) {
-	delegate.SetInverted(isInverted);
-}
-
-bool WPITalonAdapter::GetInverted() const {
-	return delegate.GetInverted();
-}
-
-void WPITalonAdapter::Disable() {
-	StopMotor();
-}
-
-void WPITalonAdapter::StopMotor() {
-	delegate.Set(ControlMode::PercentOutput,0);
-}
-
-MyTalon::MyTalon(TalonImpl * _impl): impl{_impl}
+MyTalon::MyTalon(TalonImpl * _impl): impl{_impl} 
 {
 }
 
-MyTalon::MyTalon(const MyTalon & other) : MyTalon{other.impl}
+MyTalon::MyTalon(const MyTalon & other) : MyTalon{other.impl} //copy ctor
 {
-	this->impl = nullptr;
 }
 
-MyTalon::MyTalon(MyTalon && other) : MyTalon{ other.impl }
+MyTalon::MyTalon(MyTalon && other) : MyTalon{ other.impl } //move ctor
 {
-	this->impl = nullptr;
 }
 
-MyTalon & MyTalon::operator=(const MyTalon & other)
+MyTalon & MyTalon::operator=(const MyTalon & other) //copy assign
 {
 	this->impl = other.impl;
 	return *this;
 }
 
-MyTalon & MyTalon::operator=(MyTalon && other)
+MyTalon & MyTalon::operator=(MyTalon && other) //move assign
 {
 	this->impl = other.impl;
 	return *this;
@@ -68,4 +36,28 @@ MyTalon::~MyTalon()
 {
 	//if (impl != nullptr) delete impl;
 }
+
+
+
+void MyTalon::Set(double speed)
+{
+	impl->Set(ControlMode::PercentOutput, speed);
+}
+
+double MyTalon::Get() const
+{
+	return impl->GetMotorOutputPercent();
+}
+
+void MyTalon::SetInverted(bool isInverted)
+{
+	impl->SetInverted(isInverted);
+}
+
+bool MyTalon::GetInverted() const
+{
+	return impl->GetInverted();
+}
+
+
 
