@@ -21,14 +21,16 @@ bool DriveForward::IsFinished() {
 
 
 
-DriveForwardMotionMagic::DriveForwardMotionMagic(DriveTrain & _drive) 
+DriveForwardMotionMagic::DriveForwardMotionMagic(DriveTrain & _drive)
 	: Command("drive forward(magic)"), drive{ _drive }
 {
+	Requires(&drive);
 }
 
 void DriveForwardMotionMagic::Initialize()
 {
 	drive.motionMagicInit();
+
 }
 
 void DriveForwardMotionMagic::Execute()

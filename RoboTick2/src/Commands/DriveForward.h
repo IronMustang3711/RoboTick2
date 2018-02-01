@@ -12,6 +12,7 @@
 class DriveTrain;
 struct DriveForward : Command {
 
+
 	DriveForward(DriveTrain& drive);
 
 	void Execute() override;
@@ -22,7 +23,6 @@ struct DriveForward : Command {
 
 
 struct DriveForwardMotionMagic : Command {
-
 	DriveForwardMotionMagic(DriveTrain& drive);
 
 	void Initialize() override;
