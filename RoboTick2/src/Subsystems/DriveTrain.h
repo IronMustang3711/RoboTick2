@@ -13,6 +13,7 @@ constexpr int max_encoder_rate_per_100ms = 1350;
 
 constexpr int encoder_ticks_per_rev = 1410;
 constexpr double inches_per_encoder_tick = 0.00872;
+constexpr double encoder_ticks_per_inch = 1.0 / inches_per_encoder_tick; //114.7
 constexpr double pi = 3.14159265358979323846;
 
 namespace verify_measurements {
@@ -80,6 +81,8 @@ public:
 	void profilingThing();
 
 	void motionMagicInit();
+
+	void motionMagicPeriodic();
 
 	bool motionMagicOnTarget();
 
