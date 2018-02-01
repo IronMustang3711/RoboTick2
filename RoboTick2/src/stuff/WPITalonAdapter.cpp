@@ -37,3 +37,35 @@ void WPITalonAdapter::Disable() {
 void WPITalonAdapter::StopMotor() {
 	delegate.Set(ControlMode::PercentOutput,0);
 }
+
+MyTalon::MyTalon(TalonImpl * _impl): impl{_impl}
+{
+}
+
+MyTalon::MyTalon(const MyTalon & other) : MyTalon{other.impl}
+{
+	this->impl = nullptr;
+}
+
+MyTalon::MyTalon(MyTalon && other) : MyTalon{ other.impl }
+{
+	this->impl = nullptr;
+}
+
+MyTalon & MyTalon::operator=(const MyTalon & other)
+{
+	this->impl = other.impl;
+	return *this;
+}
+
+MyTalon & MyTalon::operator=(MyTalon && other)
+{
+	this->impl = other.impl;
+	return *this;
+}
+
+MyTalon::~MyTalon()
+{
+	//if (impl != nullptr) delete impl;
+}
+

@@ -33,9 +33,21 @@ private:
 };
 
 class MyTalon {
-	using Impl = ctre::phoenix::motorcontrol::can::TalonSRX;
 
-	Impl* impl;
+	using TalonImpl = ctre::phoenix::motorcontrol::can::TalonSRX;
+
+public:
+	MyTalon(TalonImpl* impl);
+	MyTalon(const MyTalon& other);
+	MyTalon(MyTalon&& other);
+
+	MyTalon& operator =(const MyTalon& other);
+	MyTalon& operator =(MyTalon&& other);
+
+	~MyTalon();
+
+private:
+	TalonImpl* impl;
 };
 
 
