@@ -31,45 +31,25 @@ constexpr int TIMEOUT = 10;
 
 struct MotionProfileThing :public Command {
 
-
-	enum class State {
-		Init = 0,
-		Initialized,
-		Uploading_Profiles,
-		CheckStatus
-	};
-
-	State state = State::Init;
-
-	MotionProfileStatus leftStatus;
-	MotionProfileStatus rightStatus;
-
-
-
+public:
 	MotionProfileThing(WPI_TalonSRX& left_talon, WPI_TalonSRX& right_talon,DriveTrain& drive);
 
-
+protected:
 	void generateAndLoadProfiles();
-
 	void periodicTask();
 
+	void Initialize() override;
+	void Execute()    override;
+	bool IsFinished() override;
+	void End()        override;
 
-
-
-
-
+private:
+	Notifier updater;
 
 	WPI_TalonSRX& leftTalon;
 	WPI_TalonSRX& rightTalon;
-	Notifier updater;
 
-
-	SetValueMotionProfile mp_command = SetValueMotionProfile::Disable;
-
-protected:
-	void Initialize() override;
-	void Execute() override;
-	bool IsFinished() override;
-	void End() override;
+	MotionProfileStatus leftStatus;
+	MotionProfileStatus rightStatus;
 
 };

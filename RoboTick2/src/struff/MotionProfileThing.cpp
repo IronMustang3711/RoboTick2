@@ -1,14 +1,16 @@
 #include "MotionProfileThing.h"
 #include  <iterator>
-#include <sstream>
+//#include <sstream>
+using namespace std;
+
 MotionProfileThing::MotionProfileThing(WPI_TalonSRX & left_talon, WPI_TalonSRX & right_talon, DriveTrain& drive)
-	: Command("Motion profile thing"), leftTalon{left_talon},rightTalon{right_talon},updater(&MotionProfileThing::periodicTask,this)
+	: Command("Motion profile thing"), 
+	updater(&MotionProfileThing::periodicTask, this),
+	leftTalon{left_talon},
+	rightTalon{right_talon}
 {
 		Requires(&drive);
-		
-	
 }
-
 
 void MotionProfileThing::generateAndLoadProfiles()
 {
@@ -87,21 +89,22 @@ void MotionProfileThing::periodicTask()
 void MotionProfileThing::Initialize() {
 
 
-	for (auto& t : { std::ref(leftTalon),std::ref(rightTalon) }) {
-		t.get().Config_kF(SLOT, 0.842, TIMEOUT);
-		t.get().Config_kP(SLOT, 20.0, TIMEOUT);
-		t.get().Config_kI(SLOT, 0.0, TIMEOUT);
-		t.get().Config_kD(SLOT, 0.0, TIMEOUT);
+	for (auto tr : { ref(leftTalon),ref(rightTalon) }) {
+		WPI_TalonSRX& t = tr;
+		t.Config_kF(SLOT, 0.842, TIMEOUT);
+		t.Config_kP(SLOT, 20.0, TIMEOUT);
+		t.Config_kI(SLOT, 0.0, TIMEOUT);
+		t.Config_kD(SLOT, 0.0, TIMEOUT);
 
-		t.get().ClearMotionProfileTrajectories();
+		t.ClearMotionProfileTrajectories();
 
 		//t.get().ChangeMotionControlFramePeriod(50);
-		t.get().ConfigMotionProfileTrajectoryPeriod(100, TIMEOUT);
-		t.get().SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic, 100, TIMEOUT);
+		t.ConfigMotionProfileTrajectoryPeriod(100, TIMEOUT);
+		t.SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic, 100, TIMEOUT);
 
-		t.get().Set(ControlMode::MotionProfile, SetValueMotionProfile::Disable);
+		t.Set(ControlMode::MotionProfile, SetValueMotionProfile::Disable);
 
-		t.get().SetSelectedSensorPosition(0,SLOT,TIMEOUT);
+		t.SetSelectedSensorPosition(0,SLOT,TIMEOUT);
 
 	}
 
@@ -115,7 +118,7 @@ void MotionProfileThing::Execute() {
 	//leftTalon.Set(ControlMode::MotionProfile,)
 	periodicTask();
 
-	for (auto& t : { std::ref(leftTalon),std::ref(rightTalon) }) {
+	for (auto& t : { ref(leftTalon),ref(rightTalon) }) {
 		t.get().Set(ControlMode::MotionProfile, SetValueMotionProfile::Enable);
 	}
 
@@ -135,16 +138,6 @@ void MotionProfileThing::Execute() {
 	SmartDashboard::PutNumber("ll buf", leftStatus.btmBufferCnt);
 
 
-//	switch(state){
-//	case State::Init:
-//		break;
-//	case State::Initialized:
-//		break;
-//	case State::Uploading_Profiles:
-//		break;
-//	case State::CheckStatus:
-//		break;
-//	}
 }
 
 
