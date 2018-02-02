@@ -8,6 +8,7 @@
 #include <WPILib.h>
 #include <ctre/Phoenix.h>
 #include <pathfinder.h>
+#include "../Subsystems/DriveTrain.h"
 
 struct SimpleProf {
 	double position;
@@ -25,8 +26,10 @@ constexpr double MAX_A = MAX_V / 3.0; //[in/sec^2]
 constexpr double MAX_JERK = 40.0; //[[in/sec^2]/sec]] TODO: sum MAX_A from 0 to 1 by time_step ?
 constexpr double encoder_ticks_per_inch = 115;
 constexpr double WHEELBASE_WIDTH = 19.5;
+constexpr int SLOT = 0;
+constexpr int TIMEOUT = 10;
 
-struct MotionProfileThing {
+struct MotionProfileThing :public Command {
 
 
 	enum class State {
@@ -43,26 +46,30 @@ struct MotionProfileThing {
 
 
 
-	MotionProfileThing(WPI_TalonSRX& left_talon, WPI_TalonSRX& right_talon);
+	MotionProfileThing(WPI_TalonSRX& left_talon, WPI_TalonSRX& right_talon,DriveTrain& drive);
 
 
-	void initProfiles();
+	void generateAndLoadProfiles();
 
 	void periodicTask();
 
-	void reset();
 
-	void Execute();
 
-	void startFilling();
 
-	std::vector<SimpleProfPair> profs;
 
-	decltype(profs.begin()) itr; //TODO
+
 
 	WPI_TalonSRX& leftTalon;
 	WPI_TalonSRX& rightTalon;
 	Notifier updater;
-	size_t beginProfIndex = 0;
+
+
+	SetValueMotionProfile mp_command = SetValueMotionProfile::Disable;
+
+protected:
+	void Initialize() override;
+	void Execute() override;
+	bool IsFinished() override;
+	void End() override;
 
 };

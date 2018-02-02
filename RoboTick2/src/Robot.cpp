@@ -15,6 +15,7 @@
 #include "Subsystems/DriveTrain.h"
 #include "Commands/TeleopDrives.h"
 #include "Commands/DriveForward.h"
+#include "struff/MotionProfileThing.h"
 
 using namespace frc;
 using namespace std;
@@ -42,7 +43,7 @@ struct Robot : public TimedRobot {
 
 
 	void RobotInit() override {
-		SmartDashboard::PutString("version", "1.0.3");
+		SmartDashboard::PutString("version", "1.0.4");
 
 		leftTalon.SetName("left motor controller");
 		rightTalon.SetName("right motor controller");
@@ -69,6 +70,7 @@ struct Robot : public TimedRobot {
 		 SmartDashboard::PutData(new teleop::CurvatureDrive(drivetrainSubsystem,joystick));
 		 SmartDashboard::PutData(new teleop::TankDrive(drivetrainSubsystem,joystick));
 		 SmartDashboard::PutData(new DriveForwardMotionMagic(drivetrainSubsystem));
+		 SmartDashboard::PutData(new MotionProfileThing(leftTalon,rightTalon,drivetrainSubsystem));
 
 	}
 

@@ -59,10 +59,10 @@ void teleop::TankDrive::Execute() {
 	double l = -1*joystick.GetRawAxis(1);
 	double r = -1*joystick.GetRawAxis(3);
 
-	l = l*l*l;
-	r = r*r*r;
-	SmartDashboard::PutNumber("tank input right: ",r);
-	SmartDashboard::PutNumber("tank input left: ",l);
+	//l = l*l*l;
+	//r = r*r*r;
+	//SmartDashboard::PutNumber("tank input right: ",r);
+	//SmartDashboard::PutNumber("tank input left: ",l);
 
 	drive.TankDrive(l, r);
 }
