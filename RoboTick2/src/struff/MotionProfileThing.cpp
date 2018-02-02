@@ -1,24 +1,17 @@
 #include "MotionProfileThing.h"
-
+#include  <iterator>
 MotionProfileThing::MotionProfileThing(WPI_TalonSRX & left_talon, WPI_TalonSRX & right_talon)
 	: leftTalon{left_talon},rightTalon{right_talon},updater(&MotionProfileThing::periodicTask,this)
 {
-	leftTalon.ChangeMotionControlFramePeriod(50);
-	rightTalon.ChangeMotionControlFramePeriod(50);
+		initProfiles();
 	
 	updater.StartPeriodic(0.05);
 }
 
 void MotionProfileThing::initProfiles()
 {
-	//in inches:
-	constexpr double TIME_STEP = 0.1; 
-	constexpr double MAX_V = 9.0; // [in/sec]
-	constexpr double MAX_A = MAX_V / 3.0; //[in/sec^2]
-	constexpr double MAX_JERK = 40.0; //[[in/sec^2]/sec]] TODO: sum MAX_A from 0 to 1 by time_step ?
-	constexpr double encoder_ticks_per_inch = 1.0; //115;
-	constexpr double WHEELBASE_WIDTH = 19.5;
 
+//inches
 	std::vector<Waypoint> waypoints = {
 	{ 0   ,  0 , 0 },
 	{ -72 ,  72, -90 },
@@ -39,9 +32,9 @@ void MotionProfileThing::initProfiles()
 		FIT_HERMITE_CUBIC,
 		PATHFINDER_SAMPLES_HIGH,
 		TIME_STEP,
-		MAX_V * encoder_ticks_per_inch,
-		MAX_A * encoder_ticks_per_inch,
-		MAX_JERK * encoder_ticks_per_inch,
+		MAX_V ,
+		MAX_A ,
+		MAX_JERK ,
 		&candidate);
 
 	std::vector<Segment> base_traj{};
@@ -84,6 +77,49 @@ void MotionProfileThing::periodicTask()
 
 void MotionProfileThing::reset()
 {
+	leftTalon.ChangeMotionControlFramePeriod(50);
+	rightTalon.ChangeMotionControlFramePeriod(50);
+
 	leftTalon.ClearMotionProfileTrajectories();
 	rightTalon.ClearMotionProfileTrajectories();
+
+
+
+	leftTalon.ConfigMotionProfileTrajectoryPeriod(0,10);
+	rightTalon.ConfigMotionProfileTrajectoryPeriod(0,10);
+
+	beginProfIndex = 0;
+
+}
+
+void MotionProfileThing::Execute() {
+	leftTalon.GetMotionProfileStatus(leftStatus);
+	rightTalon.GetMotionProfileStatus(rightStatus);
+}
+
+void MotionProfileThing::startFilling() {
+	TrajectoryPoint leftPoint;
+	TrajectoryPoint rightPoint;
+
+	for (;beginProfIndex < profs.size()
+					&& !leftTalon.IsMotionProfileTopLevelBufferFull()
+					&& !rightTalon.IsMotionProfileTopLevelBufferFull();
+			++beginProfIndex) {
+		auto& prof = profs[beginProfIndex];
+		leftPoint.timeDur = rightPoint.timeDur = TrajectoryDuration_100ms;
+		leftPoint.zeroPos = rightPoint.zeroPos = (beginProfIndex == 0);
+		leftPoint.isLastPoint = rightPoint.isLastPoint =  (beginProfIndex = profs.size() -1);
+
+		//TODO: IMPORTANT: convert to encoder ticks!
+		leftPoint.position = prof.left.position * encoder_ticks_per_inch;
+		leftPoint.velocity = prof.left.velocity * encoder_ticks_per_inch;
+		rightPoint.position = prof.right.position * encoder_ticks_per_inch;
+		rightPoint.velocity = prof.right.velocity * encoder_ticks_per_inch;
+
+		leftTalon.PushMotionProfileTrajectory(leftPoint);
+		rightTalon.PushMotionProfileTrajectory(rightPoint);
+
+	}
+
+
 }
