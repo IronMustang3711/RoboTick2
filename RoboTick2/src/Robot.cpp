@@ -16,6 +16,7 @@
 #include "Commands/TeleopDrives.h"
 #include "Commands/DriveForward.h"
 #include "struff/MotionProfileThing.h"
+#include "struff/MotionProfileThing2.h"
 
 using namespace frc;
 using namespace std;
@@ -71,6 +72,8 @@ struct Robot : public TimedRobot {
 		 SmartDashboard::PutData(new teleop::TankDrive(drivetrainSubsystem,joystick));
 		 SmartDashboard::PutData(new DriveForwardMotionMagic(drivetrainSubsystem));
 		 SmartDashboard::PutData(new MotionProfileThing(leftTalon,rightTalon,drivetrainSubsystem));
+		 SmartDashboard::PutData(new MotionProfileThing2(leftTalon,rightTalon,drivetrainSubsystem));
+
 
 	}
 

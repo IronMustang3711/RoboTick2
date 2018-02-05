@@ -96,18 +96,18 @@ void DriveTrain::Periodic() {
 	Subsystem::Periodic();
 //	SmartDashboard::PutData(this);
 //	SmartDashboard::PutString("current command", GetCurrentCommandName());
-	SmartDashboard::PutNumber("left err", leftTalon.GetClosedLoopError(MOTION_MAGIC_SLOT));
-	SmartDashboard::PutNumber("right err", rightTalon.GetClosedLoopError(MOTION_MAGIC_SLOT));
+//	SmartDashboard::PutNumber("left err", leftTalon.GetClosedLoopError(MOTION_MAGIC_SLOT));
+//	SmartDashboard::PutNumber("right err", rightTalon.GetClosedLoopError(MOTION_MAGIC_SLOT));
 //	SmartDashboard::PutNumber("left position",leftTalon.GetSelectedSensorPosition(MOTION_MAGIC_SLOT));
 //	SmartDashboard::PutNumber("right position",rightTalon.GetSelectedSensorPosition(MOTION_MAGIC_SLOT));
-	SmartDashboard::PutNumber("left vel",leftTalon.GetSelectedSensorVelocity(MOTION_MAGIC_SLOT));
-	SmartDashboard::PutNumber("right vel",rightTalon.GetSelectedSensorVelocity(MOTION_MAGIC_SLOT));
+//	SmartDashboard::PutNumber("left vel",leftTalon.GetSelectedSensorVelocity(MOTION_MAGIC_SLOT));
+//	SmartDashboard::PutNumber("right vel",rightTalon.GetSelectedSensorVelocity(MOTION_MAGIC_SLOT));
 
-SmartDashboard::PutNumber("left output", leftTalon.Get());
-SmartDashboard::PutNumber("left position",leftTalon.GetSelectedSensorPosition(0));
+//SmartDashboard::PutNumber("left output", leftTalon.Get());
+//SmartDashboard::PutNumber("left position",leftTalon.GetSelectedSensorPosition(0));
 
-SmartDashboard::PutNumber("right output", rightTalon.Get());
-SmartDashboard::PutNumber("right position",rightTalon.GetSelectedSensorPosition(0));
+//SmartDashboard::PutNumber("right output", rightTalon.Get());
+//SmartDashboard::PutNumber("right position",rightTalon.GetSelectedSensorPosition(0));
 
 
 
@@ -180,15 +180,15 @@ void DriveTrain::motionMagicInit()
 	auto config_talon = [](WPI_TalonSRX& talon)->void {
 
 		talon.Config_kF(MOTION_MAGIC_SLOT, 1*FGain, TIMEOUT);
-		talon.Config_kP(MOTION_MAGIC_SLOT, 20.0, TIMEOUT);
+		talon.Config_kP(MOTION_MAGIC_SLOT, 5.0, TIMEOUT);
 		talon.Config_kI(MOTION_MAGIC_SLOT, 0.0, TIMEOUT);
-		talon.Config_kD(MOTION_MAGIC_SLOT, 0.0, TIMEOUT);
+		talon.Config_kD(MOTION_MAGIC_SLOT, 300.0, TIMEOUT);
 
-		constexpr double cruise_velocity = 800;//0.85 * FGain;
+		constexpr double cruise_velocity = 600;//0.85 * FGain;
 
 		//talon.ConfigMotionProfileTrajectoryPeriod(5, TIMEOUT);
 		talon.ConfigMotionCruiseVelocity(cruise_velocity, TIMEOUT);
-		talon.ConfigMotionAcceleration(0.9*cruise_velocity, TIMEOUT);
+		talon.ConfigMotionAcceleration(0.5*cruise_velocity, TIMEOUT);
 		//talon.Set(ControlMode::MotionMagic, inches_to_encoder_ticks(120.0));
 	};
 	config_talon(leftTalon);
