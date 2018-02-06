@@ -29,85 +29,109 @@ bool MyTalon::GetInverted() const {
 }
 
 int MyTalon::GetDeviceID() {
+	return impl->GetDeviceID();
 }
 
 void MyTalon::Set(ControlMode Mode, double value) {
+	impl->Set(Mode,value);
 }
 
 void MyTalon::Set(ControlMode mode, double demand0, double demand1) {
+	impl->Set(mode,demand0,demand1);
 }
 
 void MyTalon::NeutralOutput() {
+	impl->NeutralOutput();
 }
 
 void MyTalon::SetNeutralMode(NeutralMode neutralMode) {
+	impl->SetNeutralMode(neutralMode);
 }
 
 void MyTalon::EnableHeadingHold(bool enable) {
+	impl->EnableHeadingHold(enable);
 }
 
 void MyTalon::SelectDemandType(bool value) {
+	impl->SelectDemandType(value);
 }
 
 void MyTalon::SetSensorPhase(bool PhaseSensor) {
+	impl->SetSensorPhase(PhaseSensor);
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigOpenloopRamp(
 		double secondsFromNeutralToFull, int timeoutMs) {
+	return impl->ConfigOpenloopRamp(secondsFromNeutralToFull, timeoutMs);
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigClosedloopRamp(
 		double secondsFromNeutralToFull, int timeoutMs) {
+	return impl->ConfigClosedloopRamp(secondsFromNeutralToFull, timeoutMs);
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigPeakOutputForward(double percentOut,
 		int timeoutMs) {
+	return impl->ConfigPeakOutputForward(percentOut, timeoutMs);
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigPeakOutputReverse(double percentOut,
 		int timeoutMs) {
+	return impl->ConfigPeakOutputReverse(percentOut, timeoutMs);
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigNominalOutputForward(double percentOut,
 		int timeoutMs) {
+	return impl->ConfigNominalOutputForward(percentOut, timeoutMs);
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigNominalOutputReverse(double percentOut,
 		int timeoutMs) {
+	return impl->ConfigNominalOutputReverse(percentOut, timeoutMs);
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigNeutralDeadband(double percentDeadband,
 		int timeoutMs) {
+	return impl->ConfigNeutralDeadband(percentDeadband, timeoutMs);
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigVoltageCompSaturation(double voltage,
 		int timeoutMs) {
+	return impl->ConfigVoltageCompSaturation(voltage, timeoutMs);
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigVoltageMeasurementFilter(
 		int filterWindowSamples, int timeoutMs) {
+	return impl->ConfigVoltageMeasurementFilter(filterWindowSamples, timeoutMs);
 }
 
 void MyTalon::EnableVoltageCompensation(bool enable) {
+	impl->EnableVoltageCompensation(enable);
 }
 
 double MyTalon::GetBusVoltage() {
+	impl->GetBusVoltage();
 }
 
 double MyTalon::GetMotorOutputPercent() {
+	impl->GetMotorOutputPercent();
 }
 
 double MyTalon::GetMotorOutputVoltage() {
+	impl->GetMotorOutputVoltage();
 }
 
 double MyTalon::GetOutputCurrent() {
+	impl->GetOutputCurrent();
 }
 
 double MyTalon::GetTemperature() {
+	impl->GetTemperature();
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigSelectedFeedbackSensor(
 		RemoteFeedbackDevice feedbackDevice, int pidIdx, int timeoutMs) {
+	return impl->ConfigSelectedFeedbackSensor(pidIdx, timeoutMs);
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigSelectedFeedbackSensor(
@@ -363,15 +387,19 @@ ctre::phoenix::ErrorCode MyTalon::ConfigReverseLimitSwitchSource(
 
 ctre::phoenix::ErrorCode MyTalon::ConfigPeakCurrentLimit(int amps,
 		int timeoutMs) {
+	return impl->ConfigPeakCurrentLimit(amps, timeoutMs);
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigPeakCurrentDuration(int milliseconds,
 		int timeoutMs) {
+	return impl->ConfigPeakCurrentDuration(milliseconds, timeoutMs);
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigContinuousCurrentLimit(int amps,
 		int timeoutMs) {
+	return impl->ConfigContinuousCurrentLimit(amps, timeoutMs);
 }
 
 void MyTalon::EnableCurrentLimit(bool enable) {
+	impl->EnableCurrentLimit(enable);
 }

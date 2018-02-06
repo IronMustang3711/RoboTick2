@@ -69,8 +69,7 @@ public:
 	void SelectDemandType(bool value);
 	//------ Invert behavior ----------//
 	void SetSensorPhase(bool PhaseSensor);
-	void SetInverted(bool invert);
-	bool GetInverted() const;
+
 	//----- general output shaping ------------------//
 	ctre::phoenix::ErrorCode ConfigOpenloopRamp(double secondsFromNeutralToFull,
 			int timeoutMs);
