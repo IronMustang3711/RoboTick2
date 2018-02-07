@@ -110,28 +110,28 @@ void MyTalon::EnableVoltageCompensation(bool enable) {
 }
 
 double MyTalon::GetBusVoltage() {
-	impl->GetBusVoltage();
+	return impl->GetBusVoltage();
 }
 
 double MyTalon::GetMotorOutputPercent() {
-	impl->GetMotorOutputPercent();
+	return impl->GetMotorOutputPercent();
 }
 
 double MyTalon::GetMotorOutputVoltage() {
-	impl->GetMotorOutputVoltage();
+	return impl->GetMotorOutputVoltage();
 }
 
 double MyTalon::GetOutputCurrent() {
-	impl->GetOutputCurrent();
+	return impl->GetOutputCurrent();
 }
 
 double MyTalon::GetTemperature() {
-	impl->GetTemperature();
+	return impl->GetTemperature();
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigSelectedFeedbackSensor(
 		RemoteFeedbackDevice feedbackDevice, int pidIdx, int timeoutMs) {
-	return impl->ConfigSelectedFeedbackSensor(pidIdx, timeoutMs);
+	return impl->ConfigSelectedFeedbackSensor(feedbackDevice,pidIdx, timeoutMs);
 }
 
 ctre::phoenix::ErrorCode MyTalon::ConfigSelectedFeedbackSensor(
@@ -365,25 +365,25 @@ void MyTalon::ValueUpdated() {
 ctre::phoenix::motorcontrol::SensorCollection& MyTalon::GetSensorCollection() {
 }
 
-ctre::phoenix::ErrorCode MyTalon::ConfigForwardLimitSwitchSource(
-		LimitSwitchSource limitSwitchSource,
-		LimitSwitchNormal normalOpenOrClose, int timeoutMs) {
-}
-
-ctre::phoenix::ErrorCode MyTalon::ConfigReverseLimitSwitchSource(
-		LimitSwitchSource limitSwitchSource,
-		LimitSwitchNormal normalOpenOrClose, int timeoutMs) {
-}
-
-ctre::phoenix::ErrorCode MyTalon::ConfigForwardLimitSwitchSource(
-		RemoteLimitSwitchSource limitSwitchSource,
-		LimitSwitchNormal normalOpenOrClose, int deviceID, int timeoutMs) {
-}
-
-ctre::phoenix::ErrorCode MyTalon::ConfigReverseLimitSwitchSource(
-		RemoteLimitSwitchSource limitSwitchSource,
-		LimitSwitchNormal normalOpenOrClose, int deviceID, int timeoutMs) {
-}
+//ctre::phoenix::ErrorCode MyTalon::ConfigForwardLimitSwitchSource(
+//		LimitSwitchSource limitSwitchSource,
+//		LimitSwitchNormal normalOpenOrClose, int timeoutMs) {
+//}
+//
+//ctre::phoenix::ErrorCode MyTalon::ConfigReverseLimitSwitchSource(
+//		LimitSwitchSource limitSwitchSource,
+//		LimitSwitchNormal normalOpenOrClose, int timeoutMs) {
+//}
+//
+//ctre::phoenix::ErrorCode MyTalon::ConfigForwardLimitSwitchSource(
+//		RemoteLimitSwitchSource limitSwitchSource,
+//		LimitSwitchNormal normalOpenOrClose, int deviceID, int timeoutMs) {
+//}
+//
+//ctre::phoenix::ErrorCode MyTalon::ConfigReverseLimitSwitchSource(
+//		RemoteLimitSwitchSource limitSwitchSource,
+//		LimitSwitchNormal normalOpenOrClose, int deviceID, int timeoutMs) {
+//}
 
 ctre::phoenix::ErrorCode MyTalon::ConfigPeakCurrentLimit(int amps,
 		int timeoutMs) {
